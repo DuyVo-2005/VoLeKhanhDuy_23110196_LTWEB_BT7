@@ -2,7 +2,6 @@ package vn.khanhduy.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,7 +30,7 @@ import vn.khanhduy.services.ICategoryService;
 
 @Controller
 @RequestMapping("admin/categories")
-public class CategoryController {
+public class CategoriesController {
 	@Autowired
 	ICategoryService categoryService;
 
@@ -58,7 +57,7 @@ public class CategoryController {
 		categoryService.save(entity);
 		// dua thong bao ve cho bien message
 		String message = "";
-		if (categoryModel.edit == true) {
+		if (categoryModel.isEdit == true) {
 			message = "Category is Edited!!!!!";
 		} else {
 			message = "Category is Saved!!!!!!";

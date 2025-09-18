@@ -17,5 +17,5 @@ public class CategoryModel {
 	Long categoryId;
 	String name;
 	Set<ProductEntity> products;
-	boolean edit = true;
+	boolean isEdit = true;
 }
