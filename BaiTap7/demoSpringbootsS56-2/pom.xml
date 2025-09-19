@@ -112,12 +112,6 @@
 
 
 		</dependency>
-
-		<dependency>
-			<groupId>vn.khanhduy</groupId>
-			<artifactId>BaiTap6</artifactId>
-			<version>1.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>

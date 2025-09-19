@@ -22,17 +22,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
+import vn.khanhduy.DemoSpringbootsS562Application;
 import jakarta.validation.Valid;
 import vn.khanhduy.entities.CategoryEntity;
 import vn.khanhduy.model.CategoryModel;
 import vn.khanhduy.services.ICategoryService;
 
 @Controller
-@RequestMapping("admin/categories")
+@RequestMapping("admin/category")
 public class CategoriesController {
+
+    private final DemoSpringbootsS562Application demoSpringbootsS562Application;
 	@Autowired
 	ICategoryService categoryService;
+
+    CategoriesController(DemoSpringbootsS562Application demoSpringbootsS562Application) {
+        this.demoSpringbootsS562Application = demoSpringbootsS562Application;
+    }
 
 	@GetMapping("add")
 	public String add(ModelMap model) {
@@ -41,14 +47,14 @@ public class CategoriesController {
 
 		// chuyen data tu model vao bien category de data len view
 		model.addAttribute("category", categoryModel);
-		return "admin/categories/addOrEdit";
+		return "admin/category/addOrEdit";
 	}
 
 	@PostMapping("saveOrUpdate")
 	public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("category") CategoryModel categoryModel,
 			BindingResult result) {
 		if (result.hasErrors()) {
-			return new ModelAndView("admin/categories/addOrEdit");
+			return new ModelAndView("admin/category/addOrEdit");
 		}
 		CategoryEntity entity = new CategoryEntity();
 		// copy tu model sang entity
@@ -64,14 +70,43 @@ public class CategoriesController {
 		}
 		model.addAttribute("message", message);
 		// redirect về url controller
-		return new ModelAndView("forward:/admin/categories/searchpaginated", model);
+		return new ModelAndView("forward:/admin/category/searchpaginated", model);
+	}
+	
+	@RequestMapping("")
+	public String list(ModelMap model) {
+		//gọi hàm file all trong service
+		List<CategoryEntity> list = categoryService.findAll();
+		
+		//chuyển dữ liệu từ list lên biến categories
+		model.addAttribute("categories/list");
+		return "admin/categories/list";
+	}
+	
+	@RequestMapping("edit/{categoryId}")
+	public ModelAndView edit(ModelMap model, @PathVariable("categoryId") Long categoryId) {
+		Optional<CategoryEntity> optCategory = categoryService.findById(categoryId);
+		CategoryModel categoryModel = new CategoryModel();
+		//kiểm tra sự tồn tại của category
+		if(optCategory.isPresent()) {
+			CategoryEntity entity = optCategory.get();
+			//copy từ entity sang model
+			BeanUtils.copyProperties(entity, categoryModel);
+			categoryModel.setEdit(true);
+			//đẩy dữ liệu ra view
+			model.addAttribute("category",categoryModel);
+			return new ModelAndView("admin/category/addOrEdit", model);
+		}
+		
+		model.addAttribute("message", "Category is not existed!!!");
+		return new ModelAndView("forward:/admin/categoty", model);
 	}
 
 	@GetMapping("delete/{categoryId}")
 	public ModelAndView delet(ModelMap model, @PathVariable("categoryId") Long categoryId) {
 		categoryService.deleteById(categoryId);
 		model.addAttribute("message", "Category is Deleted");
-		return new ModelAndView("forward:/admin/categories/searchpaginated", model);
+		return new ModelAndView("forward:/admin/category/searchpaginated", model);
 	}
 
 	@GetMapping("search")
@@ -84,7 +119,7 @@ public class CategoriesController {
 			list = categoryService.findAll();
 		}
 		model.addAttribute("categories", list);
-		return "admin/categories/search";
+		return "admin/category/search";
 	}
 
 	@RequestMapping("searchpaginated")
@@ -107,16 +142,22 @@ public class CategoriesController {
 			int start = Math.max(1, currentPage - 2);
 			int end = Math.min(currentPage + 2, totalPages);
 			if (totalPages > count) {
-				if (end == totalPages)
-					start = end - count;
-				else if (start == 1)
-					end = start + count;
+				/*
+				 * if (end == totalPages) start = end - count; else if (start == 1) end = start
+				 * + count;
+				 */
+				
+				// hiển thị tối đa 5 số trang
+			    if (totalPages > 5) {
+			        if (end == totalPages) start = end - 4;
+			        else if (start == 1) end = start + 4;
+			    }
 			}
 			List<Integer> pageNumbers = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 			model.addAttribute("pageNumbers", pageNumbers);
 			
 		}
 		model.addAttribute("categoryPage", resultPage);
-		return "admin/categories/searchpaginated";
+		return "admin/category/searchpaginated";
 	}
 }
