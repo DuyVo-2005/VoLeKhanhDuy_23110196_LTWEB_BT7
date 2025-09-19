@@ -2,11 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+
     <title>Duy Store Admin Dashboard</title>
-    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+    <!-- Favicon -->
     <link rel="icon" th:href="@{/admin/bootstrap/img/kaiadmin/favicon.ico}" type="image/x-icon" />
 
-    <!-- Fonts and icons -->
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/plugins.min.css}" />
+    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/demo.css}" />
+    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/kaiadmin.min.css}" />
+
+    <!-- Fonts -->
+    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/fonts.min.css}" />
+
+    <!-- WebFont Loader -->
     <script th:src="@{/admin/bootstrap/js/plugin/webfont/webfont.min.js}"></script>
     <script th:inline="javascript">
         WebFont.load({
@@ -14,9 +28,13 @@
                 families: ["Public Sans:300,400,500,600,700"]
             },
             custom: {
-                families: ["Font Awesome 5 Solid", "Font Awesome 5 Regular",
-                           "Font Awesome 5 Brands", "simple-line-icons"],
-                urls: [[@{/admin/bootstrap/css/fonts.min.css}]]
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons"
+                ],
+                urls: ["[[@{/admin/bootstrap/css/fonts.min.css}]]"]
             },
             active: function () {
                 sessionStorage.fonts = true;
@@ -24,16 +42,8 @@
         });
     </script>
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/bootstrap.min.css}" />
-    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/plugins.min.css}" />
-    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/kaiadmin.min.css}" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" th:href="@{/admin/bootstrap/css/demo.css}" />
-
-    <!-- Bootstrap Bundle (bao gồm Popper) từ WebJars -->
-    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+    <!-- JS (Bootstrap) -->
+    <script th:src="@{/admin/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
 
 <body>

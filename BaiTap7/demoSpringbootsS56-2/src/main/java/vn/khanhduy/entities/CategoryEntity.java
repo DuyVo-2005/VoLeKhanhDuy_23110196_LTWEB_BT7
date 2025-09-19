@@ -31,7 +31,7 @@ public class CategoryEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long categoryId;
 	 
-	@Column(name = "category_name", length = 200, columnDefinition = "nvarchar(200) not null")
+	@Column(name = "category_name", length = 200, nullable = false, columnDefinition = "nvarchar(200) not null")
 	String name;
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
