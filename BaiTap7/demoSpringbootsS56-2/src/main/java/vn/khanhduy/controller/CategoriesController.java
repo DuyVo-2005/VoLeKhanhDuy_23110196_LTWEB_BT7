@@ -65,7 +65,7 @@ public class CategoriesController {
 		}
 		model.addAttribute("message", message);
 		// redirect về url controller
-		return new ModelAndView("forward:/admin/category/searchpaginated", model);
+		return new ModelAndView("redirect:/admin/category/searchpaginated?page=1&size=3", model);
 	}
 
 	@RequestMapping("")
@@ -172,5 +172,18 @@ public class CategoriesController {
 		}
 		model.addAttribute("categoryPage", resultPage);
 		return "admin/category/searchpaginated";
+	}
+
+	@GetMapping("view/{categoryId}")
+	public ModelAndView view(ModelMap model, @PathVariable("categoryId") Long categoryId) {
+		Optional<CategoryEntity> optCategory = categoryService.findById(categoryId);
+
+		if (optCategory.isPresent()) {
+			model.addAttribute("category", optCategory.get());
+			return new ModelAndView("admin/category/view", model);
+		}
+
+		model.addAttribute("message", "Category not found!");
+		return new ModelAndView("redirect:/admin/category/searchpaginated?page=1&size=3");
 	}
 }
